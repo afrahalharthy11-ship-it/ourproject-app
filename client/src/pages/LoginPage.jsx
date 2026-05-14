@@ -26,7 +26,6 @@ function LoginPage() {
 
   useEffect(() => {
     if (user) {
-      // ✅ نترك تحديد الصفحة لـ RootRedirect
       navigate('/', { replace: true });
     }
     return () => dispatch(clearError());
@@ -48,11 +47,13 @@ function LoginPage() {
             <div className="text-center mb-4">
               <img
                 src="/image/image.png"
-                alt="image"
+                alt="Smart Healthcare logo"
                 className="brand-logo-large"
               />
               <h1 className="auth-brand-name">Smart Healthcare</h1>
-              <p className="text-muted">Your trusted appointment platform</p>
+              <p className="text-muted">
+                Your trusted appointment platform
+              </p>
             </div>
 
             <Card className="auth-card shadow-lg">

@@ -34,7 +34,7 @@ function RegisterPage() {
     if (user) {
       navigate(
         user.role === "doctor" ? "/doctor/dashboard" : "/client/dashboard",
-        { replace: true },
+        { replace: true }
       );
     }
     return () => dispatch(clearError());
@@ -57,20 +57,24 @@ function RegisterPage() {
           <Col xs={12} sm={10} md={7} lg={6}>
             <div className="text-center mb-4">
               <img
-                 src="/image/image.png"
-                 alt="image"
-                 className="brand-logo-large"/>
+                src="/image/image.png"
+                alt="Smart Healthcare logo"
+                className="brand-logo-large"
+              />
               <h1 className="auth-brand-name">Smart Healthcare</h1>
               <p className="text-muted">Join our platform today</p>
             </div>
+
             <Card className="auth-card shadow-lg">
               <CardBody className="p-4">
                 <h4 className="mb-4 text-center fw-semibold">Create Account</h4>
+
                 {error && (
                   <Alert color="danger" className="py-2">
                     {error}
                   </Alert>
                 )}
+
                 <Form onSubmit={handleSubmit}>
                   <FormGroup>
                     <Label for="name" className="form-label-custom">
@@ -87,6 +91,7 @@ function RegisterPage() {
                       className="form-input-custom"
                     />
                   </FormGroup>
+
                   <FormGroup>
                     <Label for="email" className="form-label-custom">
                       Email Address
@@ -102,6 +107,7 @@ function RegisterPage() {
                       className="form-input-custom"
                     />
                   </FormGroup>
+
                   <FormGroup>
                     <Label for="password" className="form-label-custom">
                       Password
@@ -117,6 +123,7 @@ function RegisterPage() {
                       className="form-input-custom"
                     />
                   </FormGroup>
+
                   <FormGroup>
                     <Label for="role" className="form-label-custom">
                       I am a
@@ -133,6 +140,7 @@ function RegisterPage() {
                       <option value="doctor">Doctor</option>
                     </Input>
                   </FormGroup>
+
                   {form.role === "doctor" && (
                     <FormGroup>
                       <Label for="specialty" className="form-label-custom">
@@ -149,6 +157,7 @@ function RegisterPage() {
                       />
                     </FormGroup>
                   )}
+
                   <Button
                     type="submit"
                     color="primary"
@@ -156,10 +165,11 @@ function RegisterPage() {
                     disabled={loading}
                     className="btn-primary-custom mt-2"
                   >
-                    {loading ? <Spinner size="sm" className="me-2" /> : null}
+                    {loading && <Spinner size="sm" className="me-2" />}
                     {loading ? "Creating Account…" : "Create Account"}
                   </Button>
                 </Form>
+
                 <p className="text-center mt-3 mb-0 text-muted">
                   Already have an account?{" "}
                   <Link to="/login" className="auth-link">
