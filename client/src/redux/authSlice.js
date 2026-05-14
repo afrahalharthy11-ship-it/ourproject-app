@@ -1,40 +1,63 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import api from '../utils/api';
+import axios from 'axios';
 
-export const fetchMe = createAsyncThunk('auth/fetchMe', async (_, { rejectWithValue }) => {
-  try {
-    const res = await api.get('/auth/me');
-    return res.data.user;
-  } catch (err) {
-    return rejectWithValue(err.response?.data?.message || 'Not authenticated');
-  }
-});
+// 👇 رابط السيرفر من Render
+const API_URL = "https://ourproject-app.onrender.com/api/auth";
 
-export const loginUser = createAsyncThunk('auth/login', async (credentials, { rejectWithValue }) => {
-  try {
-    const res = await api.post('/auth/login', credentials);
-    return res.data.user;
-  } catch (err) {
-    return rejectWithValue(err.response?.data?.message || 'Login failed');
+// ✅ fetchMe
+export const fetchMe = createAsyncThunk(
+  'auth/fetchMe',
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(`${API_URL}/me`, { withCredentials: true });
+      return res.data.user;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || 'Not authenticated');
+    }
   }
-});
+);
 
-export const logoutUser = createAsyncThunk('auth/logout', async (_, { rejectWithValue }) => {
-  try {
-    await api.post('/auth/logout');
-  } catch (err) {
-    return rejectWithValue(err.response?.data?.message || 'Logout failed');
+// ✅ login
+export const loginUser = createAsyncThunk(
+  'auth/login',
+  async (credentials, { rejectWithValue }) => {
+    try {
+      const res = await axios.post(`${API_URL}/login`, credentials, {
+        withCredentials: true,
+      });
+      return res.data.user;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || 'Login failed');
+    }
   }
-});
+);
 
-export const registerUser = createAsyncThunk('auth/register', async (data, { rejectWithValue }) => {
-  try {
-    const res = await api.post('/auth/register', data);
-    return res.data.user;
-  } catch (err) {
-    return rejectWithValue(err.response?.data?.message || 'Registration failed');
+// ✅ logout
+export const logoutUser = createAsyncThunk(
+  'auth/logout',
+  async (_, { rejectWithValue }) => {
+    try {
+      await axios.post(`${API_URL}/logout`, {}, { withCredentials: true });
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || 'Logout failed');
+    }
   }
-});
+);
+
+// ✅ register
+export const registerUser = createAsyncThunk(
+  'auth/register',
+  async (data, { rejectWithValue }) => {
+    try {
+      const res = await axios.post(`${API_URL}/register`, data, {
+        withCredentials: true,
+      });
+      return res.data.user;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || 'Registration failed');
+    }
+  }
+);
 
 const authSlice = createSlice({
   name: 'auth',
