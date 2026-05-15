@@ -8,12 +8,10 @@ export const fetchMe = createAsyncThunk(
   'auth/fetchMe',
   async (_, { rejectWithValue }) => {
     try {
-      const res = await axios.get(`${API_URL}/me`, {
-        withCredentials: true
-      });
+      const res = await axios.get(`${API_URL}/me`);
       return res.data.user;
     } catch (err) {
-      return rejectWithValue(err.response?.data?.message || 'Not authenticated');
+      return rejectWithValue('Not authenticated');
     }
   }
 );
@@ -23,12 +21,10 @@ export const loginUser = createAsyncThunk(
   'auth/login',
   async (credentials, { rejectWithValue }) => {
     try {
-      const res = await axios.post(`${API_URL}/login`, credentials, {
-        withCredentials: true
-      });
+      const res = await axios.post(`${API_URL}/login`, credentials);
       return res.data.user;
     } catch (err) {
-      return rejectWithValue(err.response?.data?.message || 'Login failed');
+      return rejectWithValue('Login failed');
     }
   }
 );
@@ -38,11 +34,9 @@ export const logoutUser = createAsyncThunk(
   'auth/logout',
   async (_, { rejectWithValue }) => {
     try {
-      await axios.post(`${API_URL}/logout`, {}, {
-        withCredentials: true
-      });
+      await axios.post(`${API_URL}/logout`);
     } catch (err) {
-      return rejectWithValue(err.response?.data?.message || 'Logout failed');
+      return rejectWithValue('Logout failed');
     }
   }
 );
@@ -52,12 +46,10 @@ export const registerUser = createAsyncThunk(
   'auth/register',
   async (data, { rejectWithValue }) => {
     try {
-      const res = await axios.post(`${API_URL}/register`, data, {
-        withCredentials: true
-      });
+      const res = await axios.post(`${API_URL}/register`, data);
       return res.data.user;
     } catch (err) {
-      return rejectWithValue(err.response?.data?.message || 'Registration failed');
+      return rejectWithValue('Registration failed');
     }
   }
 );
@@ -90,35 +82,14 @@ const authSlice = createSlice({
         state.initialized = true;
         state.user = null;
       })
-      .addCase(loginUser.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
       .addCase(loginUser.fulfilled, (state, action) => {
-        state.loading = false;
         state.user = action.payload;
-        state.error = null;
-      })
-      .addCase(loginUser.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
       })
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = null;
-        state.error = null;
-      })
-      .addCase(registerUser.pending, (state) => {
-        state.loading = true;
-        state.error = null;
       })
       .addCase(registerUser.fulfilled, (state, action) => {
-        state.loading = false;
         state.user = action.payload;
-        state.error = null;
-      })
-      .addCase(registerUser.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
       });
   },
 });
