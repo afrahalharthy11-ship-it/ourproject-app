@@ -1,39 +1,50 @@
-async (req, res) => {
-  try {
-    let { name, email, password, role, specialty } = req.body;
+require("dotenv").config();
+const express = require("express");
+const session = require("express-session");
+const cors = require("cors");
+const connectDB = require("./config/db");
 
-    if (role) {
-      role = role.toLowerCase();
-    }
+const authRoutes = require("./routes/auth");
+const doctorRoutes = require("./routes/doctor");
+const patientRoutes = require("./routes/patient");
+const managerRoutes = require("./routes/manager");
 
-    const existing = await User.findOne({ email });
-    if (existing) {
-      return res.status(400).json({ message: "Email already registered" });
-    }
+const app = express();
 
-    const user = new User({ name, email, password, role });
+// connect database
+connectDB();
 
-    if (role === "doctor" && specialty) {
-      user.specialty = specialty;
-    }
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
-    await user.save();
+app.use(express.json());
 
-    req.session.userId = user._id.toString();
-    req.session.role = user.role;
+// sessions (بسيط بدون تعقيد)
+app.use(
+  session({
+    secret: "secret",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
-    req.session.save((sessionErr) => {
-      if (sessionErr) {
-        return res.status(500).json({ message: "Failed to create session" });
-      }
+// routes
+app.use("/api/auth", authRoutes);
+app.use("/api/doctor", doctorRoutes);
+app.use("/api/patient", patientRoutes);
+app.use("/api/manager", managerRoutes);
 
-      res.status(201).json({
-        message: "Registered successfully",
-        user: user.toSafeObject(),
-      });
-    });
+// error handler
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: "Internal server error" });
+});
 
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-}
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
