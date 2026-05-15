@@ -16,12 +16,13 @@ connectDB();
 
 app.set("trust proxy", 1);
 
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
-    credentials: true,
+    origin: "*",
   })
 );
+
 
 app.use(express.json());
 
