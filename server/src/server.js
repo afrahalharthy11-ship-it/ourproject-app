@@ -1,7 +1,6 @@
 require("dotenv").config();
 const express = require("express");
 const session = require("express-session");
-const MongoStore = require("connect-mongo");
 const cors = require("cors");
 const connectDB = require("./config/db");
 
@@ -12,6 +11,7 @@ const managerRoutes = require("./routes/manager");
 
 const app = express();
 
+// connect database
 connectDB();
 
 app.set("trust proxy", 1);
@@ -25,12 +25,12 @@ app.use(
 
 app.use(express.json());
 
+// ✅ session بدون MongoStore (مؤقت عشان يشتغل)
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
     cookie: {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -41,12 +41,13 @@ app.use(
   })
 );
 
+// routes
 app.use("/api/auth", authRoutes);
 app.use("/api/doctor", doctorRoutes);
 app.use("/api/patient", patientRoutes);
 app.use("/api/manager", managerRoutes);
 
-//  error handler
+// error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ message: "Internal server error" });
