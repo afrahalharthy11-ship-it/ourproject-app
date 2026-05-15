@@ -49,7 +49,8 @@ app.use("/api/manager", managerRoutes);
 
 // error handler
 
-app(err.stack);app.use((err, req, res, next) => {
+app.use((err, req, res, next) => {
+  console.error(err.stack);
   res.status(500).json({ message: "Internal server error" });
 });
 
