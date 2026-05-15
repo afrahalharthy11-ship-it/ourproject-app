@@ -17,11 +17,17 @@ connectDB();
 app.set("trust proxy", 1);
 
 
+
 app.use(
   cors({
-    origin: "*",
+    origin: [
+      "http://localhost:3000",
+      "https://ourproject-app.vercel.app"
+    ],
+    credentials: true,
   })
-);
+)
+
 
 
 app.use(express.json());
