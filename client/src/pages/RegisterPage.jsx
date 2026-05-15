@@ -128,19 +128,17 @@ function RegisterPage() {
                     <Label for="role" className="form-label-custom">
                       I am a
                     </Label>
-                  
-<select
-  id="role"
-  name="role"
-  value={form.role}
-  onChange={handleChange}
-  className="form-input-custom"
->
-  <option value="">Select role</option>
-  <option value="patient">Patient</option>
-  <option value="doctor">Doctor</option>
-</select>
-
+                    <Input
+                      id="role"
+                      type="select"
+                      name="role"
+                      value={form.role}
+                      onChange={handleChange}
+                      className="form-input-custom"
+                    >
+                      <option value="patient">Patient</option>
+                      <option value="doctor">Doctor</option>
+                    </Input>
                   </FormGroup>
 
                   {form.role === "doctor" && (
