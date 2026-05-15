@@ -7,7 +7,7 @@ const connectDB = require("./config/db");
 const authRoutes = require("./routes/auth");
 const doctorRoutes = require("./routes/doctor");
 const patientRoutes = require("./routes/patient");
-const managerRoutes = require("./routes/manager"); // ✅ كان فيها خطأ
+const managerRoutes = require("./routes/manager"); 
 
 const app = express();
 
