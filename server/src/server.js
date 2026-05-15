@@ -22,11 +22,12 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000",
-      "https://ourproject-app.vercel.app"
+      "https://ourproject-app.vercel.app",
+      "https://ourproject-3eemzmkxd-afrahalthy11-ship-its-projects.vercel.app"
     ],
     credentials: true,
   })
-)
+);
 
 
 
