@@ -1,10 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-// 👇 رابط السيرفر من Render
 const API_URL = "https://ourproject-app.onrender.com/api/auth";
 
-// ✅ fetchMe
+// fetchMe
 export const fetchMe = createAsyncThunk(
   'auth/fetchMe',
   async (_, { rejectWithValue }) => {
@@ -17,7 +16,7 @@ export const fetchMe = createAsyncThunk(
   }
 );
 
-// ✅ login
+// login
 export const loginUser = createAsyncThunk(
   'auth/login',
   async (credentials, { rejectWithValue }) => {
@@ -32,7 +31,7 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-// ✅ logout
+// logout
 export const logoutUser = createAsyncThunk(
   'auth/logout',
   async (_, { rejectWithValue }) => {
@@ -44,7 +43,7 @@ export const logoutUser = createAsyncThunk(
   }
 );
 
-// ✅ register
+// register
 export const registerUser = createAsyncThunk(
   'auth/register',
   async (data, { rejectWithValue }) => {
