@@ -11,8 +11,8 @@ const managerRoutes = require("./routes/manager");
 
 const app = express();
 
-// connect database
-connectDB();
+// ✅ مؤقتًا نعلّق قاعدة البيانات عشان نحل مشكلة timeout
+// connectDB();
 
 app.set("trust proxy", 1);
 
@@ -25,10 +25,10 @@ app.use(
 
 app.use(express.json());
 
-// ✅ session بدون MongoStore (مؤقت عشان يشتغل)
+// ✅ session بدون MongoStore
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET || "secret",
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -47,14 +47,14 @@ app.use("/api/doctor", doctorRoutes);
 app.use("/api/patient", patientRoutes);
 app.use("/api/manager", managerRoutes);
 
-// error handler
-
+// ✅ error handler (مصحوح)
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ message: "Internal server error" });
 });
 
 const PORT = process.env.PORT || 5000;
+
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
