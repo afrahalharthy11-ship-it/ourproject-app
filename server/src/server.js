@@ -7,7 +7,7 @@ const connectDB = require("./config/db");
 const authRoutes = require("./routes/auth");
 const doctorRoutes = require("./routes/doctor");
 const patientRoutes = require("./routes/patient");
-const managerRoutes = require("./routes/manager");
+const managerRoutes = require("./routes/manager"); // ✅ كان فيها خطأ
 
 const app = express();
 
@@ -16,27 +16,32 @@ connectDB();
 
 app.set("trust proxy", 1);
 
-
+// ✅ CORS مضبوط مع sessions
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://ourproject-app.vercel.app",
+  "https://ourproject-3eemzmkxd-afrahalthy11-ship-its-projects.vercel.app"
+];
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "https://ourproject-app.vercel.app",
-      "https://ourproject-3eemzmkxd-afrahalthy11-ship-its-projects.vercel.app"
-    ],
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
 
-
-
 app.use(express.json());
 
-// ✅ session بدون MongoStore (مؤقت عشان يشتغل)
+// ✅ session
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET || "secret",
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -55,7 +60,6 @@ app.use("/api/doctor", doctorRoutes);
 app.use("/api/patient", patientRoutes);
 app.use("/api/manager", managerRoutes);
 
-// error handler
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

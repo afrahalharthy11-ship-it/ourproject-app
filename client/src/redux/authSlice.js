@@ -8,7 +8,9 @@ export const fetchMe = createAsyncThunk(
   'auth/fetchMe',
   async (_, { rejectWithValue }) => {
     try {
-      const res = await axios.get(`${API_URL}/me`);
+      const res = await axios.get(`${API_URL}/me`, {
+        withCredentials: true
+      });
       return res.data.user;
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || 'Not authenticated');
@@ -21,7 +23,9 @@ export const loginUser = createAsyncThunk(
   'auth/login',
   async (credentials, { rejectWithValue }) => {
     try {
-      const res = await axios.post(`${API_URL}/login`, credentials);
+      const res = await axios.post(`${API_URL}/login`, credentials, {
+        withCredentials: true
+      });
       return res.data.user;
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || 'Login failed');
@@ -34,7 +38,9 @@ export const logoutUser = createAsyncThunk(
   'auth/logout',
   async (_, { rejectWithValue }) => {
     try {
-      await axios.post(`${API_URL}/logout`, {});
+      await axios.post(`${API_URL}/logout`, {}, {
+        withCredentials: true
+      });
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || 'Logout failed');
     }
@@ -46,7 +52,9 @@ export const registerUser = createAsyncThunk(
   'auth/register',
   async (data, { rejectWithValue }) => {
     try {
-      const res = await axios.post(`${API_URL}/register`, data);
+      const res = await axios.post(`${API_URL}/register`, data, {
+        withCredentials: true
+      });
       return res.data.user;
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || 'Registration failed');
