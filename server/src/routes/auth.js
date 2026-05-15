@@ -2,7 +2,9 @@ async (req, res) => {
   try {
     let { name, email, password, role, specialty } = req.body;
 
-    role = role.toLowerCase(); 
+    if (role) {
+      role = role.toLowerCase();
+    }
 
     const existing = await User.findOne({ email });
     if (existing) {
@@ -30,6 +32,7 @@ async (req, res) => {
         user: user.toSafeObject(),
       });
     });
+
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
